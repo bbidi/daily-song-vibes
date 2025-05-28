@@ -1,13 +1,36 @@
-// Update this page (the content is just a fallback if you fail to update the page)
+
+import React, { useState } from 'react';
+import Layout from '@/components/Layout';
+import AuthScreen from '@/components/AuthScreen';
+import Feed from '@/components/Feed';
+import PostSong from '@/components/PostSong';
+import Profile from '@/components/Profile';
 
 const Index = () => {
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [currentTab, setCurrentTab] = useState('feed');
+
+  if (!isAuthenticated) {
+    return <AuthScreen onAuthenticated={() => setIsAuthenticated(true)} />;
+  }
+
+  const renderContent = () => {
+    switch (currentTab) {
+      case 'feed':
+        return <Feed />;
+      case 'post':
+        return <PostSong />;
+      case 'profile':
+        return <Profile />;
+      default:
+        return <Feed />;
+    }
+  };
+
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100">
-      <div className="text-center">
-        <h1 className="text-4xl font-bold mb-4">Welcome to Your Blank App</h1>
-        <p className="text-xl text-gray-600">Start building your amazing project here!</p>
-      </div>
-    </div>
+    <Layout currentTab={currentTab} onTabChange={setCurrentTab}>
+      {renderContent()}
+    </Layout>
   );
 };
 
