@@ -3,24 +3,72 @@ import React, { useState } from 'react';
 import { Music, Mail, Lock, Apple } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import { useAuth } from '@/hooks/useAuth';
+import { useToast } from '@/hooks/use-toast';
 
-interface AuthScreenProps {
-  onAuthenticated: () => void;
-}
-
-const AuthScreen = ({ onAuthenticated }: AuthScreenProps) => {
+const AuthScreen = () => {
   const [isLogin, setIsLogin] = useState(true);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [loading, setLoading] = useState(false);
+  const { signUp, signIn } = useAuth();
+  const { toast } = useToast();
 
-  const handleEmailAuth = () => {
-    console.log(`${isLogin ? 'Login' : 'Signup'} with email:`, email);
-    onAuthenticated();
+  const handleEmailAuth = async () => {
+    if (!email || !password) {
+      toast({
+        title: "Error",
+        description: "Please fill in all fields",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    setLoading(true);
+    
+    try {
+      const { error } = isLogin 
+        ? await signIn(email, password)
+        : await signUp(email, password);
+
+      if (error) {
+        let errorMessage = "An error occurred. Please try again.";
+        
+        if (error.message.includes('Invalid login credentials')) {
+          errorMessage = "Invalid email or password. Please check your credentials.";
+        } else if (error.message.includes('User already registered')) {
+          errorMessage = "An account with this email already exists. Please sign in instead.";
+        } else if (error.message.includes('Password')) {
+          errorMessage = "Password must be at least 6 characters long.";
+        }
+        
+        toast({
+          title: "Authentication Error",
+          description: errorMessage,
+          variant: "destructive",
+        });
+      } else if (!isLogin) {
+        toast({
+          title: "Account Created",
+          description: "Please check your email to verify your account.",
+        });
+      }
+    } catch (err) {
+      toast({
+        title: "Error",
+        description: "Something went wrong. Please try again.",
+        variant: "destructive",
+      });
+    } finally {
+      setLoading(false);
+    }
   };
 
   const handleAppleAuth = () => {
-    console.log('Apple ID authentication');
-    onAuthenticated();
+    toast({
+      title: "Coming Soon",
+      description: "Apple authentication will be available soon!",
+    });
   };
 
   return (
@@ -65,9 +113,10 @@ const AuthScreen = ({ onAuthenticated }: AuthScreenProps) => {
             {/* Email Auth Button */}
             <Button
               onClick={handleEmailAuth}
-              className="w-full bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white h-12"
+              disabled={loading}
+              className="w-full bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white h-12 disabled:opacity-50"
             >
-              {isLogin ? 'Sign In' : 'Create Account'}
+              {loading ? 'Please wait...' : (isLogin ? 'Sign In' : 'Create Account')}
             </Button>
 
             {/* Divider */}

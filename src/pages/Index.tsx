@@ -5,13 +5,22 @@ import AuthScreen from '@/components/AuthScreen';
 import Feed from '@/components/Feed';
 import PostSong from '@/components/PostSong';
 import Profile from '@/components/Profile';
+import { useAuth } from '@/hooks/useAuth';
 
 const Index = () => {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [currentTab, setCurrentTab] = useState('feed');
+  const { user, loading } = useAuth();
 
-  if (!isAuthenticated) {
-    return <AuthScreen onAuthenticated={() => setIsAuthenticated(true)} />;
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-purple-900 via-blue-900 to-indigo-900 flex items-center justify-center">
+        <div className="text-white text-lg">Loading...</div>
+      </div>
+    );
+  }
+
+  if (!user) {
+    return <AuthScreen />;
   }
 
   const renderContent = () => {
