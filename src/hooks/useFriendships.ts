@@ -171,15 +171,12 @@ export function useFriendships() {
     if (!query.trim() || !user) return [];
 
     try {
-      const { data, error } = await supabase
-        .from('profiles')
-        .select('*')
-        .neq('user_id', user.id)
-        .or(`display_name.ilike.%${query}%,username.ilike.%${query}%`)
-        .limit(10);
+      const { data, error } = await supabase.functions.invoke('search-users', {
+        body: { query }
+      });
 
       if (error) throw error;
-      return data || [];
+      return data.users || [];
     } catch (error) {
       console.error('Error searching users:', error);
       return [];

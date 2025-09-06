@@ -1,1 +1,7 @@
 project_id = "myqedxuzjdlngbcgyyhn"
+
+[functions.spotify-search]
+verify_jwt = true
+
+[functions.search-users]
+verify_jwt = true
