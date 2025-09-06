@@ -14,6 +14,33 @@ export type Database = {
   }
   public: {
     Tables: {
+      friendships: {
+        Row: {
+          addressee_id: string
+          created_at: string
+          id: string
+          requester_id: string
+          status: string
+          updated_at: string
+        }
+        Insert: {
+          addressee_id: string
+          created_at?: string
+          id?: string
+          requester_id: string
+          status?: string
+          updated_at?: string
+        }
+        Update: {
+          addressee_id?: string
+          created_at?: string
+          id?: string
+          requester_id?: string
+          status?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       profiles: {
         Row: {
           avatar_url: string | null
@@ -44,6 +71,51 @@ export type Database = {
           updated_at?: string
           user_id?: string
           username?: string | null
+        }
+        Relationships: []
+      }
+      songs: {
+        Row: {
+          album: string | null
+          apple_music_url: string | null
+          artist: string
+          created_at: string
+          description: string | null
+          genre: string | null
+          id: string
+          spotify_url: string | null
+          title: string
+          updated_at: string
+          user_id: string
+          youtube_url: string | null
+        }
+        Insert: {
+          album?: string | null
+          apple_music_url?: string | null
+          artist: string
+          created_at?: string
+          description?: string | null
+          genre?: string | null
+          id?: string
+          spotify_url?: string | null
+          title: string
+          updated_at?: string
+          user_id: string
+          youtube_url?: string | null
+        }
+        Update: {
+          album?: string | null
+          apple_music_url?: string | null
+          artist?: string
+          created_at?: string
+          description?: string | null
+          genre?: string | null
+          id?: string
+          spotify_url?: string | null
+          title?: string
+          updated_at?: string
+          user_id?: string
+          youtube_url?: string | null
         }
         Relationships: []
       }
