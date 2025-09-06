@@ -90,14 +90,24 @@ const Feed = () => {
 
           {/* Actions */}
           <div className="flex items-center gap-4">
-            <button className="flex items-center gap-1 text-white/60 hover:text-red-400 transition-colors">
-              <Heart className="w-4 h-4" />
-              <span className="text-sm">0</span>
-            </button>
-            <button className="flex items-center gap-1 text-white/60 hover:text-blue-400 transition-colors">
+            <button className="flex items-center gap-2 text-white/60 hover:text-blue-400 transition-colors px-3 py-1.5 rounded-full bg-white/5 hover:bg-white/10">
               <MessageCircle className="w-4 h-4" />
-              <span className="text-sm">Reply</span>
+              <span className="text-sm">Send DM</span>
             </button>
+            <div className="flex items-center gap-1">
+              <button className="w-8 h-8 rounded-full bg-white/5 hover:bg-white/10 transition-colors flex items-center justify-center text-lg hover:scale-110 transform duration-200">
+                ❤️
+              </button>
+              <button className="w-8 h-8 rounded-full bg-white/5 hover:bg-white/10 transition-colors flex items-center justify-center text-lg hover:scale-110 transform duration-200">
+                🔥
+              </button>
+              <button className="w-8 h-8 rounded-full bg-white/5 hover:bg-white/10 transition-colors flex items-center justify-center text-lg hover:scale-110 transform duration-200">
+                😍
+              </button>
+              <button className="w-8 h-8 rounded-full bg-white/5 hover:bg-white/10 transition-colors flex items-center justify-center text-lg hover:scale-110 transform duration-200">
+                🎵
+              </button>
+            </div>
           </div>
         </div>
       ))}
