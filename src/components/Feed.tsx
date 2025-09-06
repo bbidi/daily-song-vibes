@@ -3,28 +3,6 @@ import React from 'react';
 import { Heart, MessageCircle, ExternalLink, Clock, Music } from 'lucide-react';
 import { useSongs } from '@/hooks/useSongs';
 
-interface Song {
-  id: string;
-  title: string;
-  artist: string;
-  albumCover: string;
-  platform: 'spotify' | 'apple';
-  deepLink: string;
-}
-
-interface Post {
-  id: string;
-  user: {
-    name: string;
-    initial: string;
-    avatar: string;
-  };
-  song: Song;
-  caption?: string;
-  timestamp: string;
-  likes: number;
-}
-
 const Feed = () => {
   const { songs, loading } = useSongs();
 
