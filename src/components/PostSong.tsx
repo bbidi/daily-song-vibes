@@ -4,6 +4,8 @@ import { Search, Music, Plus, CheckCircle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
+import { useSongs } from '@/hooks/useSongs';
+import { useToast } from '@/hooks/use-toast';
 
 interface Song {
   id: string;
@@ -19,6 +21,11 @@ const PostSong = () => {
   const [selectedSong, setSelectedSong] = useState<Song | null>(null);
   const [caption, setCaption] = useState('');
   const [selectedPlatform, setSelectedPlatform] = useState<'spotify' | 'apple'>('spotify');
+  const [customSongData, setCustomSongData] = useState({ title: '', artist: '' });
+  const [isPosting, setIsPosting] = useState(false);
+  
+  const { createSong } = useSongs();
+  const { toast } = useToast();
 
   const mockSearchResults: Song[] = [
     {
@@ -51,14 +58,53 @@ const PostSong = () => {
     console.log(`Searching for: ${searchQuery} on ${selectedPlatform}`);
   };
 
-  const handlePostSong = () => {
+  const handlePostSong = async () => {
+    let songToPost: Song | null = null;
+    
     if (selectedSong) {
-      console.log('Posting song:', selectedSong, 'with caption:', caption);
+      songToPost = selectedSong;
+    } else if (customSongData.title && customSongData.artist) {
+      songToPost = {
+        id: '',
+        title: customSongData.title,
+        artist: customSongData.artist,
+        album: '',
+        albumCover: '',
+        platform: selectedPlatform
+      };
+    }
+    
+    if (!songToPost) {
+      toast({
+        title: "Error",
+        description: "Please select a song or enter song details",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    setIsPosting(true);
+    
+    const songData = {
+      title: songToPost.title,
+      artist: songToPost.artist,
+      album: songToPost.album,
+      description: caption || undefined,
+      spotify_url: selectedPlatform === 'spotify' ? 'https://open.spotify.com' : undefined,
+      apple_music_url: selectedPlatform === 'apple' ? 'https://music.apple.com' : undefined,
+    };
+
+    const result = await createSong(songData);
+    
+    if (result) {
       // Reset form
       setSelectedSong(null);
       setCaption('');
       setSearchQuery('');
+      setCustomSongData({ title: '', artist: '' });
     }
+    
+    setIsPosting(false);
   };
 
   return (
@@ -101,24 +147,22 @@ const PostSong = () => {
         </div>
       </div>
 
-      {/* Search */}
+      {/* Manual Entry */}
       <div className="mb-6">
-        <div className="flex gap-2">
-          <div className="flex-1 relative">
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-white/40 w-4 h-4" />
-            <Input
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              placeholder="Search for a song..."
-              className="pl-10 bg-white/10 border-white/20 text-white placeholder:text-white/40"
-            />
-          </div>
-          <Button
-            onClick={handleSearch}
-            className="bg-purple-600 hover:bg-purple-700 text-white"
-          >
-            Search
-          </Button>
+        <p className="text-white/80 text-sm mb-3">Or enter song details manually:</p>
+        <div className="space-y-3">
+          <Input
+            value={customSongData.title}
+            onChange={(e) => setCustomSongData(prev => ({ ...prev, title: e.target.value }))}
+            placeholder="Song title"
+            className="bg-white/10 border-white/20 text-white placeholder:text-white/40"
+          />
+          <Input
+            value={customSongData.artist}
+            onChange={(e) => setCustomSongData(prev => ({ ...prev, artist: e.target.value }))}
+            placeholder="Artist name"
+            className="bg-white/10 border-white/20 text-white placeholder:text-white/40"
+          />
         </div>
       </div>
 
@@ -160,21 +204,25 @@ const PostSong = () => {
         </div>
       )}
 
-      {/* Selected Song */}
-      {selectedSong && (
+      {/* Song Preview */}
+      {(selectedSong || (customSongData.title && customSongData.artist)) && (
         <div className="mb-6">
-          <p className="text-white/80 text-sm mb-3">Selected song:</p>
+          <p className="text-white/80 text-sm mb-3">Song to share:</p>
           <div className="bg-white/10 p-4 rounded-xl border border-white/20">
             <div className="flex items-center gap-3 mb-4">
-              <img
-                src={selectedSong.albumCover}
-                alt={`${selectedSong.title} album cover`}
-                className="w-16 h-16 rounded-lg object-cover"
-              />
+              <div className="w-16 h-16 bg-gradient-to-br from-purple-400 to-blue-500 rounded-lg flex items-center justify-center">
+                <Music className="w-8 h-8 text-white" />
+              </div>
               <div>
-                <p className="text-white font-medium">{selectedSong.title}</p>
-                <p className="text-white/70 text-sm">{selectedSong.artist}</p>
-                <p className="text-white/50 text-xs">{selectedSong.album}</p>
+                <p className="text-white font-medium">
+                  {selectedSong?.title || customSongData.title}
+                </p>
+                <p className="text-white/70 text-sm">
+                  {selectedSong?.artist || customSongData.artist}
+                </p>
+                <p className="text-white/50 text-xs">
+                  {selectedSong?.album || 'Manual Entry'}
+                </p>
               </div>
             </div>
             
@@ -192,11 +240,11 @@ const PostSong = () => {
       {/* Post Button */}
       <Button
         onClick={handlePostSong}
-        disabled={!selectedSong}
+        disabled={(!selectedSong && !(customSongData.title && customSongData.artist)) || isPosting}
         className="w-full bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white py-3 disabled:opacity-50 disabled:cursor-not-allowed"
       >
         <Plus className="w-4 h-4 mr-2" />
-        Share Song
+        {isPosting ? 'Sharing...' : 'Share Song'}
       </Button>
     </div>
   );
