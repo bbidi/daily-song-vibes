@@ -75,9 +75,17 @@ const Feed = () => {
           >
             <div className="flex items-center gap-3">
               <div className="relative">
-                <div className="w-16 h-16 bg-gradient-to-br from-purple-400 to-blue-500 rounded-lg flex items-center justify-center">
-                  <Music className="w-8 h-8 text-white" />
-                </div>
+                {song.image_url ? (
+                  <img
+                    src={song.image_url}
+                    alt={`${song.title} album cover`}
+                    className="w-16 h-16 rounded-lg object-cover"
+                  />
+                ) : (
+                  <div className="w-16 h-16 bg-gradient-to-br from-purple-400 to-blue-500 rounded-lg flex items-center justify-center">
+                    <Music className="w-8 h-8 text-white" />
+                  </div>
+                )}
                 <div className="absolute inset-0 bg-black/20 rounded-lg group-hover:bg-black/10 transition-all flex items-center justify-center">
                   <ExternalLink className="w-4 h-4 text-white opacity-0 group-hover:opacity-100 transition-opacity" />
                 </div>

@@ -14,6 +14,7 @@ interface Song {
   spotify_url: string | null;
   youtube_url: string | null;
   apple_music_url: string | null;
+  image_url: string | null;
   created_at: string;
   updated_at: string;
 }
@@ -27,6 +28,7 @@ interface CreateSongData {
   spotify_url?: string;
   youtube_url?: string;
   apple_music_url?: string;
+  image_url?: string;
 }
 
 export function useSongs() {

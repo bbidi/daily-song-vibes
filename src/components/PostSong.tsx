@@ -85,6 +85,7 @@ const PostSong = () => {
       album: songToPost.album,
       description: caption || undefined,
       spotify_url: songToPost.spotify_url,
+      image_url: songToPost.image_url,
     };
 
     const result = await createSong(songData);

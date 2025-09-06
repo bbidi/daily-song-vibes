@@ -83,6 +83,7 @@ export type Database = {
           description: string | null
           genre: string | null
           id: string
+          image_url: string | null
           spotify_url: string | null
           title: string
           updated_at: string
@@ -97,6 +98,7 @@ export type Database = {
           description?: string | null
           genre?: string | null
           id?: string
+          image_url?: string | null
           spotify_url?: string | null
           title: string
           updated_at?: string
@@ -111,6 +113,7 @@ export type Database = {
           description?: string | null
           genre?: string | null
           id?: string
+          image_url?: string | null
           spotify_url?: string | null
           title?: string
           updated_at?: string
