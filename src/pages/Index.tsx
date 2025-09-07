@@ -5,10 +5,13 @@ import AuthScreen from '@/components/AuthScreen';
 import Feed from '@/components/Feed';
 import PostSong from '@/components/PostSong';
 import Profile from '@/components/Profile';
+import Messages from '@/components/Messages';
+import Chat from '@/components/Chat';
 import { useAuth } from '@/hooks/useAuth';
 
 const Index = () => {
   const [currentTab, setCurrentTab] = useState('feed');
+  const [selectedConversation, setSelectedConversation] = useState<{id: string, name: string} | null>(null);
   const { user, loading } = useAuth();
 
   if (loading) {
@@ -23,7 +26,33 @@ const Index = () => {
     return <AuthScreen />;
   }
 
+  const handleConversationSelect = (conversationId: string, recipientName: string) => {
+    setSelectedConversation({ id: conversationId, name: recipientName });
+  };
+
+  const handleBackFromChat = () => {
+    setSelectedConversation(null);
+  };
+
   const renderContent = () => {
+    if (currentTab === 'messages') {
+      if (selectedConversation) {
+        return (
+          <Chat 
+            conversationId={selectedConversation.id}
+            recipientName={selectedConversation.name}
+            onBack={handleBackFromChat}
+          />
+        );
+      }
+      return (
+        <Messages 
+          onTabChange={setCurrentTab}
+          onConversationSelect={handleConversationSelect}
+        />
+      );
+    }
+
     switch (currentTab) {
       case 'feed':
         return <Feed />;

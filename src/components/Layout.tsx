@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { Music, User, Home, Plus } from 'lucide-react';
+import { Music, User, Home, Plus, MessageSquare } from 'lucide-react';
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -13,11 +13,17 @@ const Layout = ({ children, currentTab, onTabChange }: LayoutProps) => {
     <div className="min-h-screen bg-gradient-to-br from-purple-900 via-blue-900 to-indigo-900">
       <div className="max-w-md mx-auto bg-white/10 backdrop-blur-lg min-h-screen relative">
         {/* Header */}
-        <div className="p-4 bg-white/5 backdrop-blur-sm border-b border-white/10">
+        <div className="p-4 bg-white/5 backdrop-blur-sm border-b border-white/10 relative">
           <h1 className="text-2xl font-bold text-white text-center flex items-center justify-center gap-2">
             <Music className="w-6 h-6 text-purple-300" />
             MusicLocket
           </h1>
+          <button
+            onClick={() => onTabChange('messages')}
+            className="absolute right-4 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-white/10 hover:bg-white/20 transition-colors flex items-center justify-center"
+          >
+            <MessageSquare className="w-5 h-5 text-white" />
+          </button>
         </div>
 
         {/* Content */}
