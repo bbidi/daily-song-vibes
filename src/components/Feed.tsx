@@ -29,7 +29,7 @@ const Feed = () => {
 
   return (
     <div className="h-full flex flex-col">
-      <div className="flex-1 flex items-center justify-center px-4 pt-4">
+      <div className="flex-1 flex items-center justify-center px-4 pt-16">
         <Carousel className="w-full max-w-sm">
           <CarouselContent>
             {songs.map((song) => (
