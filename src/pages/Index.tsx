@@ -5,6 +5,7 @@ import AuthScreen from '@/components/AuthScreen';
 import Feed from '@/components/Feed';
 import PostSong from '@/components/PostSong';
 import Profile from '@/components/Profile';
+import Settings from '@/components/Settings';
 import Messages from '@/components/Messages';
 import Chat from '@/components/Chat';
 import { useAuth } from '@/hooks/useAuth';
@@ -34,6 +35,10 @@ const Index = () => {
     setSelectedConversation(null);
   };
 
+  const handleBackFromSettings = () => {
+    setCurrentTab('profile');
+  };
+
   const renderContent = () => {
     if (currentTab === 'messages') {
       if (selectedConversation) {
@@ -59,7 +64,9 @@ const Index = () => {
       case 'post':
         return <PostSong />;
       case 'profile':
-        return <Profile />;
+        return <Profile onTabChange={setCurrentTab} />;
+      case 'settings':
+        return <Settings onBack={handleBackFromSettings} />;
       default:
         return <Feed />;
     }

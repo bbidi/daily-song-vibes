@@ -18,7 +18,11 @@ interface SongHistory {
   caption?: string;
 }
 
-const Profile = () => {
+interface ProfileProps {
+  onTabChange: (tab: string) => void;
+}
+
+const Profile = ({ onTabChange }: ProfileProps) => {
   const [showAddFriend, setShowAddFriend] = useState(false);
   const [searchFriend, setSearchFriend] = useState('');
   const [searchResults, setSearchResults] = useState<any[]>([]);
@@ -82,6 +86,7 @@ const Profile = () => {
           </Button>
           <Button
             variant="outline"
+            onClick={() => onTabChange('settings')}
             className="border-white/20 text-white hover:bg-white/10"
           >
             <Settings className="w-4 h-4" />

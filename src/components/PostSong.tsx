@@ -105,7 +105,6 @@ const PostSong = () => {
   return (
     <div className="p-4">
       <div className="text-center mb-6">
-        <h2 className="text-xl font-semibold text-white mb-2">Share Today's Song</h2>
         <p className="text-white/60 text-sm">Search for a song or enter details manually</p>
       </div>
 
