@@ -39,7 +39,8 @@ const Feed = () => {
           <CarouselContent>
             {songs.map((song) => (
               <CarouselItem key={song.id}>
-                <div className="flex flex-col items-center space-y-4">
+                <div className="bg-white/5 backdrop-blur-sm rounded-3xl p-6 border border-white/10 mx-2">
+                  <div className="flex flex-col items-center space-y-4">
                   {/* User Info */}
                   <div className="flex items-center gap-3 w-full">
                     <div className="w-10 h-10 bg-gradient-to-br from-purple-400 to-blue-500 rounded-full flex items-center justify-center">
@@ -116,6 +117,7 @@ const Feed = () => {
                         🎵
                       </button>
                     </div>
+                  </div>
                   </div>
                 </div>
               </CarouselItem>
