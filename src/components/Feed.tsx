@@ -29,12 +29,7 @@ const Feed = () => {
 
   return (
     <div className="h-full flex flex-col">
-      <div className="text-center py-4 border-b border-white/10">
-        <h2 className="text-xl font-semibold text-white mb-1">Today's Music</h2>
-        <p className="text-white/60 text-sm">See what your friends are listening to</p>
-      </div>
-
-      <div className="flex-1 flex items-center justify-center px-4">
+      <div className="flex-1 flex items-center justify-center px-4 pt-4">
         <Carousel className="w-full max-w-sm">
           <CarouselContent>
             {songs.map((song) => (
